@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Panel</title>
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <span class="logo-icon">⚙️</span>
+                <span class="logo-text">Admin Panel</span>
+            </div>
+            <nav class="admin-nav">
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="icon">📊</span>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-section="projects">
+                    <span class="icon">🎬</span>
+                    Projects
+                </button>
+                <button class="nav-item" data-section="config">
+                    <span class="icon">⚙️</span>
+                    Settings
+                </button>
+                <button class="nav-item" data-section="skills">
+                    <span class="icon">🎯</span>
+                    Skills
+                </button>
+                <button class="nav-item" data-section="contact">
+                    <span class="icon">📧</span>
+                    Contact Info
+                </button>
+                <button class="nav-item" data-section="messages">
+                    <span class="icon">💬</span>
+                    Messages
+                </button>
+            </nav>
+            <div class="admin-footer">
+                <a href="/" class="back-link">← Back to Portfolio</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="save-btn" id="saveBtn">💾 Save Changes</button>
+                    <button class="reset-btn" id="resetBtn">🔄 Reset</button>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon">🎬</span>
+                        <div class="stat-content">
+                            <p class="stat-label">Total Projects</p>
+                            <p class="stat-value" id="totalProjects">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <div class="stat-content">
+                            <p class="stat-label">Featured Projects</p>
+                            <p class="stat-value" id="featuredProjects">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">💬</span>
+                        <div class="stat-content">
+                            <p class="stat-label">Messages Received</p>
+                            <p class="stat-value" id="messagesCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🎯</span>
+                        <div class="stat-content">
+                            <p class="stat-label">Skills Listed</p>
+                            <p class="stat-value" id="skillsCount">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-info">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li><a href="#" onclick="switchSection('projects')">Manage Projects</a></li>
+                        <li><a href="#" onclick="switchSection('config')">Edit Site Info</a></li>
+                        <li><a href="#" onclick="switchSection('skills')">Update Skills</a></li>
+                        <li><a href="#" onclick="switchSection('contact')">Update Contact Info</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects-section" class="content-section">
+                <div class="section-header">
+                    <h2>Manage Projects</h2>
+                    <button class="add-btn" id="addProjectBtn">+ Add Project</button>
+                </div>
+
+                <div class="projects-list" id="projectsList"></div>
+
+                <!-- Project Form Modal -->
+                <div class="modal" id="projectModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="projectModalTitle">Add Project</h3>
+                            <button class="close-btn" onclick="closeProjectModal()">✕</button>
+                        </div>
+                        <form id="projectForm" class="admin-form">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="projectTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="projectCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="video-editing">Video Editing</option>
+                                    <option value="graphic-design">Graphic Design</option>
+                                    <option value="photo-editing">Photo Editing</option>
+                                    <option value="motion-graphics">Motion Graphics</option>
+                                    <option value="photography">Photography</option>
+                                    <option value="branding">Branding</option>
+                                    <option value="posters">Posters</option>
+                                    <option value="social-media">Social Media</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="projectDescription" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Thumbnail (Emoji or URL)</label>
+                                <input type="text" id="projectThumbnail" placeholder="🎬 or image-url">
+                            </div>
+                            <div class="form-group">
+                                <label>Duration (for videos)</label>
+                                <input type="text" id="projectDuration" placeholder="0:45">
+                            </div>
+                            <div class="form-group">
+                                <label>Tags (comma-separated)</label>
+                                <input type="text" id="projectTags" placeholder="tag1, tag2, tag3">
+                            </div>
+                            <div class="form-group checkbox">
+                                <input type="checkbox" id="projectFeatured">
+                                <label for="projectFeatured">Featured Project</label>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Save Project</button>
+                                <button type="button" class="cancel-btn" onclick="closeProjectModal()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Config Section -->
+            <section id="config-section" class="content-section">
+                <div class="section-header">
+                    <h2>Site Configuration</h2>
+                </div>
+
+                <form id="configForm" class="admin-form">
+                    <div class="form-section">
+                        <h3>Site Information</h3>
+                        <div class="form-group">
+                            <label>Site Title</label>
+                            <input type="text" id="siteTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>Tagline</label>
+                            <input type="text" id="siteTagline">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="siteDescription" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>About Section</h3>
+                        <div class="form-group">
+                            <label>About Title</label>
+                            <input type="text" id="aboutTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>Description 1</label>
+                            <textarea id="aboutDesc1" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Description 2</label>
+                            <textarea id="aboutDesc2" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>About Image URL</label>
+                            <input type="text" id="aboutImageUrl">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>SEO</h3>
+                        <div class="form-group">
+                            <label>SEO Title</label>
+                            <input type="text" id="seoTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>SEO Description</label>
+                            <textarea id="seoDescription" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>SEO Keywords</label>
+                            <input type="text" id="seoKeywords" placeholder="keyword1, keyword2">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Save Configuration</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills-section" class="content-section">
+                <div class="section-header">
+                    <h2>Manage Skills</h2>
+                    <button class="add-btn" id="addSkillBtn">+ Add Skill</button>
+                </div>
+
+                <div class="skills-list" id="skillsList"></div>
+
+                <!-- Skill Form Modal -->
+                <div class="modal" id="skillModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="skillModalTitle">Add Skill</h3>
+                            <button class="close-btn" onclick="closeSkillModal()">✕</button>
+                        </div>
+                        <form id="skillForm" class="admin-form">
+                            <div class="form-group">
+                                <label>Skill Name</label>
+                                <input type="text" id="skillName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Icon (Emoji)</label>
+                                <input type="text" id="skillIcon" placeholder="🎬" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Proficiency (%)</label>
+                                <input type="number" id="skillProficiency" min="0" max="100" required>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Save Skill</button>
+                                <button type="button" class="cancel-btn" onclick="closeSkillModal()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact-section" class="content-section">
+                <div class="section-header">
+                    <h2>Contact Information</h2>
+                </div>
+
+                <form id="contactForm" class="admin-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="contactEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="contactPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="contactLocation" required>
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Social Media</h3>
+                    <div class="form-group">
+                        <label>Instagram URL</label>
+                        <input type="url" id="socialInstagram">
+                    </div>
+                    <div class="form-group">
+                        <label>Behance URL</label>
+                        <input type="url" id="socialBehance">
+                    </div>
+                    <div class="form-group">
+                        <label>LinkedIn URL</label>
+                        <input type="url" id="socialLinkedin">
+                    </div>
+                    <div class="form-group">
+                        <label>YouTube URL</label>
+                        <input type="url" id="socialYoutube">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Save Contact Info</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="messages-section" class="content-section">
+                <div class="section-header">
+                    <h2>Contact Messages</h2>
+                    <button class="clear-btn" id="clearMessagesBtn">🗑️ Clear All</button>
+                </div>
+
+                <div class="messages-list" id="messagesList">
+                    <p class="empty-state">No messages yet</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
